@@ -1,0 +1,11 @@
+# AI Usage
+
+I used **Codex as a development assistant**, delegating complete initial drafts of the React/TypeScript interface, DuckDB-WASM session integration, Cloudflare Worker, lexical retrieval, SQL validation, automated tests and verification documentation. I set the scope and approved incremental checkpoints against the assessment requirements and `PLAN.md`.
+
+**Cloudflare Workers AI** has a separate application role: `@cf/meta/llama-3.3-70b-instruct-fp8-fast` proposes SQL from the question, schema and retrieved documentation. It receives no dataset rows or Parquet bytes and does not execute SQL.
+
+Generated implementations were retained or revised using browser behavior, TypeScript/build checks, security tests and real model responses, rather than Codex's assertions. I manually verified the Chrome workflow and the credit-card count of **1,874,874**. Reference answers were calculated separately using trusted queries against the actual Parquet file in local Python DuckDB, then compared with generated results through the browser gate. Codex also helped write and run these checks; that assistance is not independent certification. The recorded evidence and limitations are in [VERIFICATION.md](VERIFICATION.md).
+
+A confidently wrong **real Workers AI output** answered a cash-payment question with `payment_type = 1`. The documented mapping is **1 = credit card; 2 = cash**. Comparing the SQL with that mapping and the independently calculated counts exposed the mistake: 1,874,874 credit-card trips versus 495,171 cash trips. With retrieved payment documentation, the model used `payment_type = 2`. The incorrect baseline output was rejected. This was actual inference, not a mocked failure. A Codex-generated parser implementation also required correction: `json_serialize_sql(?)` failed at runtime until its bound parameter was explicitly cast to VARCHAR.
+
+I remain responsible for understanding the implementation and judging its answers. Generated SQL stays untrusted and must pass the shared browser SQL security gate before execution. Successful execution does not establish semantic correctness. Ten passing golden questions and the small retrieval comparison provide bounded evidence, not universal correctness or complete security; mocked timeout and failure tests are identified separately.

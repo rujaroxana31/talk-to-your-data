@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "talk-to-your-data-api",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-29",
+  "ai": { "binding": "AI", "remote": true },
+  "vars": { "FRONTEND_ORIGIN": "http://127.0.0.1:5173" },
+  "observability": { "enabled": false }
+}

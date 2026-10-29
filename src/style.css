@@ -1,0 +1,24 @@
+﻿:root { font-family: system-ui, sans-serif; color: #172c36; background: #f3f5f4; line-height: 1.6; }
+body { margin: 0; }
+main { max-width: 900px; margin: 48px auto; padding: 0 24px; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin: 8px 0; }
+h2 { font-size: 1.25rem; margin-top: 0; }
+.eyebrow { color: #326953; text-transform: uppercase; letter-spacing: .1em; font-size: .8rem; font-weight: 700; }
+section { margin-top: 24px; padding: 24px; background: white; border: 1px solid #d5dfda; border-radius: 8px; }
+label { display: block; font-weight: 600; margin-bottom: 8px; }
+input, textarea { box-sizing: border-box; width: 100%; padding: 12px; border: 1px solid #83968d; border-radius: 4px; color: inherit; background: white; font: inherit; }
+textarea { resize: vertical; font-family: ui-monospace, monospace; font-size: .9rem; line-height: 1.6; }
+button { margin-top: 12px; padding: 10px 20px; border: 0; border-radius: 4px; background: #24573f; color: white; font: inherit; font-weight: 600; cursor: pointer; }
+button:disabled { opacity: .55; cursor: not-allowed; }
+.question-row { display: flex; gap: 12px; align-items: stretch; }
+.question-row input { flex: 1; min-width: 0; }
+.question-row button { margin-top: 0; white-space: nowrap; }
+@media (max-width: 600px) { .question-row { flex-direction: column; } }
+input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 3px solid #77ac97; outline-offset: 3px; }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th, td { padding: 10px 12px; border-bottom: 1px solid #d5dfda; white-space: pre-wrap; overflow-wrap: anywhere; min-width: 90px; }
+td { font-variant-numeric: tabular-nums; }
+.note, .null { color: #50635d; font-size: .85rem; }
+.warning { padding: 12px; border-left: 4px solid #a87514; background: #fff6df; font-size: .9rem; }
+.error { color: #a32a22; overflow-wrap: anywhere; }

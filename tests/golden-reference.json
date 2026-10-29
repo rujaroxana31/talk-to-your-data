@@ -1,0 +1,132 @@
+{
+  "evidence": "Independent native DuckDB reference SQL, no AI output executed",
+  "duckdbVersion": "2.0.0",
+  "datasetBytes": 38139949,
+  "sha256": "797d6f008e67c3e3371b7f957ab97dbc2b38a9fb0ac083cb5eae4b0297b32372",
+  "cases": [
+    {
+      "id": "G01",
+      "question": "How many trips are in the dataset?",
+      "referenceSQL": "SELECT COUNT(*) FROM trips",
+      "shape": "1 row, 1 count column",
+      "expectedRows": [
+        [
+          2463931
+        ]
+      ]
+    },
+    {
+      "id": "G02",
+      "question": "How many trips had pickup timestamps in January 2022?",
+      "referenceSQL": "SELECT COUNT(*) FROM trips WHERE tpep_pickup_datetime >= TIMESTAMP '2022-01-01' AND tpep_pickup_datetime < TIMESTAMP '2022-02-01'",
+      "shape": "1 row, 1 count column",
+      "expectedRows": [
+        [
+          2463879
+        ]
+      ]
+    },
+    {
+      "id": "G03",
+      "question": "How many trips were paid by credit card?",
+      "referenceSQL": "SELECT COUNT(*) FROM trips WHERE payment_type = 1",
+      "shape": "1 row, 1 count column",
+      "expectedRows": [
+        [
+          1874874
+        ]
+      ]
+    },
+    {
+      "id": "G04",
+      "question": "How many trips were paid in cash?",
+      "referenceSQL": "SELECT COUNT(*) FROM trips WHERE payment_type = 2",
+      "shape": "1 row, 1 count column",
+      "expectedRows": [
+        [
+          495171
+        ]
+      ]
+    },
+    {
+      "id": "G05",
+      "question": "What is the average trip distance in miles across all records?",
+      "referenceSQL": "SELECT AVG(trip_distance) FROM trips",
+      "shape": "1 row, 1 numeric column (miles)",
+      "expectedRows": [
+        [
+          5.37275119311366
+        ]
+      ]
+    },
+    {
+      "id": "G06",
+      "question": "What is the average metered fare, using fare_amount, across all records?",
+      "referenceSQL": "SELECT AVG(fare_amount) FROM trips",
+      "shape": "1 row, 1 numeric column (dollars)",
+      "expectedRows": [
+        [
+          12.946484016795376
+        ]
+      ]
+    },
+    {
+      "id": "G07",
+      "question": "What is the total recorded revenue, defined as SUM(total_amount), across all records?",
+      "referenceSQL": "SELECT SUM(total_amount) FROM trips",
+      "shape": "1 row, 1 numeric column (dollars)",
+      "expectedRows": [
+        [
+          47232005.22967679
+        ]
+      ]
+    },
+    {
+      "id": "G08",
+      "question": "How many trips have a known passenger count of exactly one?",
+      "referenceSQL": "SELECT COUNT(*) FROM trips WHERE passenger_count = 1",
+      "shape": "1 row, 1 count column",
+      "expectedRows": [
+        [
+          1794055
+        ]
+      ]
+    },
+    {
+      "id": "G09",
+      "question": "Which five pickup location IDs had the most trips? Return the pickup location ID and trip count, ordered by count descending and then pickup location ID ascending.",
+      "referenceSQL": "SELECT PULocationID, COUNT(*) AS trip_count FROM trips GROUP BY PULocationID ORDER BY trip_count DESC, PULocationID ASC LIMIT 5",
+      "shape": "5 ordered rows, 2 columns: location ID and count",
+      "expectedRows": [
+        [
+          237,
+          121630
+        ],
+        [
+          236,
+          120814
+        ],
+        [
+          132,
+          103485
+        ],
+        [
+          161,
+          88237
+        ],
+        [
+          186,
+          80580
+        ]
+      ]
+    },
+    {
+      "id": "G10",
+      "question": "What was the total amount of actual cash tips?",
+      "referenceSQL": null,
+      "shape": "HTTP 422 with UNANSWERABLE; no SQL executed",
+      "expectedError": "UNANSWERABLE",
+      "expectedRows": null
+    }
+  ]
+}
