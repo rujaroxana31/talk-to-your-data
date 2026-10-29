@@ -30,11 +30,10 @@ SHA-256: `797d6f008e67c3e3371b7f957ab97dbc2b38a9fb0ac083cb5eae4b0297b32372`.
 
 ## Quick Start
 
-**Submission status:** the plan (`ffcd41c`) and application (`58501ce`) are committed. A local Git clone was verified successfully; no remote is configured. Replace the placeholder below with the eventual submission repository URL. A remote GitHub clone has not been tested.
+**Submission status:** the project is published on [GitHub](https://github.com/rujaroxana31/talk-to-your-data), branch `master`, with the plan (`ffcd41c`), application (`58501ce`) and final verification documentation (`461ca66`) commits. A local Git clone was verified successfully; a fresh clone from GitHub has not yet been tested.
 
 ```powershell
-$repositoryUrl = 'REPLACE_WITH_SUBMISSION_REPOSITORY_URL'
-git clone $repositoryUrl talk-to-your-data
+git clone --branch master https://github.com/rujaroxana31/talk-to-your-data.git talk-to-your-data
 cd talk-to-your-data
 npm ci
 npm exec -- wrangler whoami
