@@ -134,7 +134,7 @@ Timeouts and cancellation were tested with controlled mocks; no real 30-second p
 The installed WASM package is prerelease `1.33.1-dev57.0`. A forced MVP probe raised `_setThrew is not defined`; fallback/other-browser reliability remains unverified. Joins, windows, set operations and some otherwise-safe SQL are deliberately unsupported.
 CORS is restricted but is not authentication; public quota/abuse controls are absent. Payload checks cover application-generated requests, not arbitrary sensitive text pasted into a question.
 
-**PLAN.md follow-through still outstanding:** a [local Git clone was verified successfully](#local-git-clone-verification), but complete setup time was not measured, so the under-ten-minute requirement remains unverified. Browser memory measurement remains outstanding; five-hour timebox compliance is not substantiated by the available evidence. Git history now includes the original plan (`ffcd41c`) and application (`58501ce`). The earlier [clean-copy setup evidence](#clean-copy-setup-evidence) below records a separate measured experiment and its limitations.
+**PLAN.md follow-through still outstanding:** both a [local Git clone](#local-git-clone-verification) and a [fresh GitHub clone](#fresh-github-clone-verification) were verified successfully, but complete setup time was not measured, so the under-ten-minute requirement remains unverified. Browser memory measurement remains outstanding; five-hour timebox compliance is not substantiated by the available evidence. Git history includes the original plan (`ffcd41c`) and application (`58501ce`); the fresh GitHub clone verified commit `f7d31fc`. The earlier [clean-copy setup evidence](#clean-copy-setup-evidence) below records a separate measured experiment and its limitations.
 The question-only API deviation is already documented in README's **Verification and Limitations** section: one fixed dataset uses server-owned schema rather than a request dataset identifier. `PLAN.md` remains unchanged as the original preimplementation planning snapshot; its unresolved assumptions and status statements describe that point in time. No production deployment is required to establish these local results.
 
 ## 6. How to Reproduce
@@ -175,6 +175,25 @@ npm run test:golden
 This runs the browser suite, one real CORS smoke request and ten real golden requests. It writes `tests/golden-report.json` before asserting the score; failures remain recorded and exit nonzero. Vite/Chrome are started/stopped by the harness. If changing `TEST_PORT`, also change the Worker's allowed origin.
 To independently regenerate the native reference fixture, use an existing Python DuckDB installation: `python scripts/verify-golden-reference.py --duckdb-path <installation-directory>`. Omit the flag if already importable. The script checks dataset identity and overwrites only the reference fixture; it installs nothing. The saved fixture permits browser testing without Python.
 Repeating the real retrieval comparison requires authenticated Wrangler, Workers AI access and available inference quota. To repeat it, run `npm run worker:compare`, then `Invoke-RestMethod -Uri http://127.0.0.1:8788/compare -Method Post | ConvertTo-Json -Depth 8`. It makes ten real calls and reports both variants plus snippet IDs; it never executes SQL. Repeated outcomes may differ.
+
+### Fresh GitHub clone verification
+
+These results were supplied from the completed verification in `C:\Users\rujat\Desktop\talk-to-your-data-github-test`; they were not rerun for this documentation update. The repository was downloaded directly from GitHub on branch `master`, and commit **`f7d31fc`** was confirmed:
+
+```powershell
+git clone --branch master https://github.com/rujaroxana31/talk-to-your-data.git talk-to-your-data-github-test
+```
+
+| Check | Recorded result |
+| --- | --- |
+| `npm ci` | **105 packages installed**, approximately **5 seconds**, **0 reported vulnerabilities** |
+| `npm test` | **73 passed, 0 failures** |
+| `npm run build` | TypeScript checks passed; Vite production build completed successfully |
+| `npm run test:browser` | **92 SQL security gate tests**, **11 DuckDB runtime restrictions**, **12 mocked-AI generation/UI checks** and **4 SQL editor checks** passed |
+| Browser errors/requests | No unexpected requests or uncaught browser errors |
+
+This verifies remote repository transfer, installation, build and the browser checks from the published commit. The AI responses in this browser run were **mocked**; no real Workers AI request was executed in this fresh GitHub clone. Earlier real inference, golden results and local-clone measurements remain separate evidence.
+Only dependency installation has a reported approximate duration for this run. Complete setup elapsed time was not measured, so this does not establish setup in under ten minutes. Deployment, browser memory and the historical five-hour timebox remain unverified; zero reported npm vulnerabilities is not a comprehensive security guarantee.
 
 ### Local Git clone verification
 
