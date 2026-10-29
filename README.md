@@ -30,7 +30,7 @@ SHA-256: `797d6f008e67c3e3371b7f957ab97dbc2b38a9fb0ac083cb5eae4b0297b32372`.
 
 ## Quick Start
 
-**Submission status:** only `PLAN.md` is committed; application files are untracked and no remote is configured. A clone of that history is not runnable. The commands below require the eventual complete submission repository; replace the placeholder URL rather than using it literally.
+**Submission status:** the plan (`ffcd41c`) and application (`58501ce`) are committed. A local Git clone was verified successfully; no remote is configured. Replace the placeholder below with the eventual submission repository URL. A remote GitHub clone has not been tested.
 
 ```powershell
 $repositoryUrl = 'REPLACE_WITH_SUBMISSION_REPOSITORY_URL'
@@ -103,9 +103,9 @@ See [reproduction details](VERIFICATION.md#6-how-to-reproduce) for offline HTTP 
 ## Verification and Limitations
 
 Recorded results: **10/10 real-model golden cases**, **73 unit/API tests**, **92 browser security checks** and **11 runtime restriction checks** passed. The small real-model RAG experiment scored **3/5 without retrieval vs. 5/5 with retrieval**, not a general accuracy guarantee.
-Clean-copy setup completed in **90.864 seconds** with preinstalled tools and existing authentication. **Genuine clean-clone setup remains unverified**; [measurements and caveats](VERIFICATION.md#clean-copy-setup-evidence) distinguish these tests.
+Successful [local Git clone verification](VERIFICATION.md#local-git-clone-verification) included installation, tests, build and a real AI-generated browser query. **Only `npm ci` was timed: 16.270 seconds; complete clone setup time was not measured**, so the under-ten-minute requirement remains unverified. The earlier [clean-copy experiment](VERIFICATION.md#clean-copy-setup-evidence) took 90.864 seconds and remains separate evidence.
 
-- Include the untracked application/configuration/docs/tests/dataset in the submission and retest its clone. Exclude dependencies, builds, local Worker state and private env/credential files.
+- Remote repository transfer and deployment have not been tested. Keep dependencies, builds, local Worker state and private env/credential files excluded from submission.
 - Deviations from the original plan: the single-dataset API accepts only `{question}`; column existence is checked by DuckDB binding, not a separate column-name allowlist.
 - Browser memory consumption is unmeasured; reliable SQL timeout/cancellation is not implemented. The historical five-hour timebox is not substantiated.
 - SQL can be semantically wrong despite passing validation. The supported subset is deliberately limited, DuckDB-WASM is a prerelease, and other browsers/fallback bundles remain unverified. CORS is not authentication; cancelling generation does not guarantee cancellation of remote inference/billing.

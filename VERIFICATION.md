@@ -134,7 +134,7 @@ Timeouts and cancellation were tested with controlled mocks; no real 30-second p
 The installed WASM package is prerelease `1.33.1-dev57.0`. A forced MVP probe raised `_setThrew is not defined`; fallback/other-browser reliability remains unverified. Joins, windows, set operations and some otherwise-safe SQL are deliberately unsupported.
 CORS is restricted but is not authentication; public quota/abuse controls are absent. Payload checks cover application-generated requests, not arbitrary sensitive text pasted into a question.
 
-**PLAN.md follow-through still outstanding:** genuine clean-clone setup under ten minutes and browser memory measurement remain unverified; five-hour timebox compliance is not substantiated by the available evidence. Only the initial PLAN commit exists, so cloning that history alone does not provide the working app. The [clean-copy setup evidence](#clean-copy-setup-evidence) below records the separate measured test and its limitations.
+**PLAN.md follow-through still outstanding:** a [local Git clone was verified successfully](#local-git-clone-verification), but complete setup time was not measured, so the under-ten-minute requirement remains unverified. Browser memory measurement remains outstanding; five-hour timebox compliance is not substantiated by the available evidence. Git history now includes the original plan (`ffcd41c`) and application (`58501ce`). The earlier [clean-copy setup evidence](#clean-copy-setup-evidence) below records a separate measured experiment and its limitations.
 The question-only API deviation is already documented in README's **Verification and Limitations** section: one fixed dataset uses server-owned schema rather than a request dataset identifier. `PLAN.md` remains unchanged as the original preimplementation planning snapshot; its unresolved assumptions and status statements describe that point in time. No production deployment is required to establish these local results.
 
 ## 6. How to Reproduce
@@ -176,9 +176,30 @@ This runs the browser suite, one real CORS smoke request and ten real golden req
 To independently regenerate the native reference fixture, use an existing Python DuckDB installation: `python scripts/verify-golden-reference.py --duckdb-path <installation-directory>`. Omit the flag if already importable. The script checks dataset identity and overwrites only the reference fixture; it installs nothing. The saved fixture permits browser testing without Python.
 Repeating the real retrieval comparison requires authenticated Wrangler, Workers AI access and available inference quota. To repeat it, run `npm run worker:compare`, then `Invoke-RestMethod -Uri http://127.0.0.1:8788/compare -Method Post | ConvertTo-Json -Depth 8`. It makes ten real calls and reports both variants plus snippet IDs; it never executes SQL. Repeated outcomes may differ.
 
+### Local Git clone verification
+
+The following results were supplied from the completed clone verification; they were not rerun for this documentation update.
+A real local `git clone --no-hardlinks` contained both commits, `ffcd41c docs: add initial implementation plan` and `58501ce feat: implement Talk to Your Data application`, plus `package.json` and the pinned Parquet dataset. The cloned working tree was clean.
+
+| Check | Recorded result |
+| --- | --- |
+| Dependency installation | `npm ci` succeeded in **16.270 seconds** |
+| Unit/API tests | `npm test`: **73 passed, 0 failed** |
+| Production build | `npm run build`: successful |
+| Browser tests | `npm run test:browser`: **92 security gate tests**, **11 runtime restrictions**, **12 generation/UI checks** and **4 editor checks** passed |
+| Frontend | Started successfully on port **5173** |
+| Cloudflare Worker | Responded successfully on port **8787**, using the remote Workers AI binding |
+| Real generation and execution | “How many trips were paid by credit card?” → `SELECT COUNT(*) FROM trips WHERE payment_type = 1` → **1,874,874** |
+| Browser DuckDB initialization | **542.9 ms** |
+| Browser dataset loading | **195.5 ms** |
+| Browser SQL validation/execution/conversion | **51.1 ms** |
+
+This verifies the committed application from a **local Git clone**, including one real-model end-to-end query; it does not represent a rerun of the ten-question golden set. Only `npm ci` was timed for setup. The browser phase timings are separate measurements, not a complete setup duration; they do not establish browser memory usage.
+Complete setup time, prerequisite installation/account provisioning time, remote GitHub cloning and deployment were not verified by this exercise. Workers AI inference requires authentication, access and available quota. The previous clean-copy total below must not be attributed to this clone run or combined with its timings.
+
 ### Clean-copy setup evidence
 
-On 2026-10-29, a genuine local `git clone --no-hardlinks` succeeded but contained **only PLAN.md**, with no `package.json`. A runnable clean-clone claim is therefore **not established**.
+In the earlier experiment on 2026-10-29, before the application commit, a local `git clone --no-hardlinks` succeeded but contained **only PLAN.md**, with no `package.json`. That historical attempt did not establish a runnable clone; the successful post-commit clone verification is recorded above.
 A separate clean-copy test copied the 39 files listed by `git ls-files --cached --others --exclude-standard` into an empty temporary directory. It copied no `node_modules`, build output, `.wrangler` state or private environment files; installation used a new empty npm cache:
 
 ```text
